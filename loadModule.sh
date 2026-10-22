@@ -1,15 +1,21 @@
 #!/bin/bash
 
-MODULE_NAME="byteDump"
-
-sudo rm -f /dev/$MODULE_NAME
+sudo rm -f /dev/byteDump
 sudo rmmod byteDump 
+
+sudo rm -f /dev/spamZero
+sudo rmmod spamZero 
 
 
 make
 sudo insmod byteDump.ko
+sudo insmod spamZero.ko
+
 
 MAJOR_NUM=$(cat /proc/devices | grep byteDump | cut -c 1-3)
 
-sudo mknod /dev/$MODULE_NAME c $MAJOR_NUM 0
-sudo chmod 666 /dev/$MODULE_NAME
+sudo mknod /dev/byteDump c $MAJOR_NUM 0
+sudo mknod /dev/spamZero c $MAJOR_NUM 1
+
+sudo chmod 666 /dev/byteDump
+sudo chmod 666 /dev/spamZero
